@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { FormControl, FormLabel, Input, Button, Box } from '@chakra-ui/react';
 import {
   Accordion,
@@ -11,14 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { addContact } from 'redux/contacts/contactsOperations';
-
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  number: Yup.number().required('Required'),
-});
+import { RegisterSchema } from 'components/validation/validation';
 
 export const AddContact = () => {
   const dispatch = useDispatch();
@@ -54,6 +46,8 @@ export const AddContact = () => {
                         errorBorderColor="red.300"
                         type="name"
                         name="name"
+                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                       ></Field>
                       {errors.name && touched.name ? (
                         <ErrorMessage name="name" component="div" />
@@ -65,7 +59,6 @@ export const AddContact = () => {
                       Number
                       <Field
                         as={Input}
-                        // w="400px"
                         isInvalid={errors.number && touched.number}
                         errorBorderColor="red.300"
                         type="number"

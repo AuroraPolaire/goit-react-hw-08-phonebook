@@ -19,7 +19,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { logIn } from 'redux/auth/operations';
 import { useDispatch } from 'react-redux';
 import { LoginSchema } from 'components/validation/validation';
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 const ModalLogin = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
@@ -99,6 +99,9 @@ const ModalLogin = ({ onClose, isOpen }) => {
   );
 };
 
-// ModalLogin.propTypes = {}
+ModalLogin.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+};
 
 export default ModalLogin;

@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/contacts/contactsOperations';
@@ -8,6 +7,7 @@ import {
   selectItems,
 } from 'redux/contacts/selectors';
 import {
+  Button,
   Table,
   Tbody,
   Tr,

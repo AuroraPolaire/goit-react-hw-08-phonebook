@@ -24,8 +24,6 @@ export const register = createAsyncThunk(
     try {
       const result = await axios.post('/users/signup', credentials);
       setAuthHeader(result.data.token);
-      console.log('result', result);
-
       return result.data;
     } catch (error) {
       toast.error('Such user already exists');

@@ -19,7 +19,7 @@ import { register } from 'redux/auth/operations';
 import { useDispatch } from 'react-redux';
 import { RegisterSchema } from 'components/validation/validation';
 
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const ModalRegister = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
@@ -53,6 +53,8 @@ const ModalRegister = ({ onClose, isOpen }) => {
                       errorBorderColor="red.300"
                       type="name"
                       name="name"
+                      pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                      title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                     ></Field>
                     {errors.name && touched.name ? (
                       <ErrorMessage name="name" component="div" />
@@ -113,6 +115,9 @@ const ModalRegister = ({ onClose, isOpen }) => {
   );
 };
 
-// ModalRegister.propTypes = {};
+ModalRegister.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+};
 
 export default ModalRegister;

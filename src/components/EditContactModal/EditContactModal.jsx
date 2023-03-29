@@ -18,13 +18,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { editContact } from 'redux/contacts/contactsOperations';
 import { selectItems } from 'redux/contacts/selectors';
 import { EditSchema } from 'components/validation/validation';
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 const EditContactModal = ({ isOpen, onClose, id }) => {
   const contacts = useSelector(selectItems);
   const contactToEdit = contacts.filter(contact => contact.id === id);
 
-  // console.log(id);
   const dispatch = useDispatch();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -96,6 +95,10 @@ const EditContactModal = ({ isOpen, onClose, id }) => {
   );
 };
 
-// EditContactModal.propTypes = {}
+EditContactModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+};
 
 export default EditContactModal;

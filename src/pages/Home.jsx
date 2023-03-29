@@ -7,9 +7,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-// import { MdCheckCircle } from 'react-icons/md';
 import React from 'react';
-// import PropTypes from 'prop-types'
 
 const Home = () => {
   return (
@@ -43,7 +41,5 @@ const Home = () => {
     </>
   );
 };
-
-// Home.propTypes = {}
 
 export default Home;

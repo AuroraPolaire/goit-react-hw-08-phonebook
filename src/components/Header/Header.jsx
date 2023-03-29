@@ -11,16 +11,14 @@ import {
   useColorMode,
   useDisclosure,
 } from '@chakra-ui/react';
-import ModalRegister from 'components/ModalRegister/ModalRegister';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsLoggedIn, selectUser } from 'redux/auth/selectors';
 import { logOut } from 'redux/auth/operations';
 import ModalLogin from 'components/ModalLogin/ModalLogin';
+import ModalRegister from 'components/ModalRegister/ModalRegister';
 
-// import PropTypes from 'prop-types';
-
-const Header = props => {
+const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const {
     onOpen: onRegisterOpen,
