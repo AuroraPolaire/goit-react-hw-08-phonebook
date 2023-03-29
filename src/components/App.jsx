@@ -22,7 +22,7 @@ export const App = () => {
     <>
       <Toaster
         containerStyle={{
-          top: 70,
+          top: 10,
         }}
       />
       <Routes>

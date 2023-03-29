@@ -15,12 +15,22 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contacts/contactsOperations';
 import { EditSchema } from 'components/validation/validation';
+import { selectItems } from 'redux/contacts/selectors';
 
 export const AddContact = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectItems);
+
+  const checkIfContactExists = ({ name, number }) => {
+    return contacts.some(
+      contact => contact.name === name || contact.number === number
+    );
+  };
+
   return (
     <>
       <Accordion allowToggle>
@@ -38,7 +48,10 @@ export const AddContact = () => {
               initialValues={{ name: '', number: '' }}
               validationSchema={EditSchema}
               onSubmit={(values, { resetForm }) => {
-                dispatch(addContact(values));
+                const contactExists = checkIfContactExists(values);
+                !contactExists
+                  ? dispatch(addContact(values))
+                  : toast.error('Such contact already exists');
                 resetForm({ name: '', number: '' });
               }}
             >
