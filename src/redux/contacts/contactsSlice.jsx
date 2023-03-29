@@ -58,8 +58,6 @@ const contactsSlice = createSlice({
       .addCase(editContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
-        console.log(state.items);
-        console.log(action.payload.id);
         state.items.forEach(item => {
           if (item.id === action.payload.id) {
             return (

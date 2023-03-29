@@ -16,23 +16,14 @@ import {
 } from '@chakra-ui/react';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { logIn } from 'redux/auth/operations';
 import { useDispatch } from 'react-redux';
+import { LoginSchema } from 'components/validation/validation';
 // import PropTypes from 'prop-types'
-
-const RegisterSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-});
 
 const ModalLogin = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-
   const dispatch = useDispatch();
 
   return (
@@ -45,7 +36,7 @@ const ModalLogin = ({ onClose, isOpen }) => {
           <ModalBody pb={6}>
             <Formik
               initialValues={{ email: '', password: '' }}
-              validationSchema={RegisterSchema}
+              validationSchema={LoginSchema}
               onSubmit={values => {
                 dispatch(logIn(values));
                 onClose();

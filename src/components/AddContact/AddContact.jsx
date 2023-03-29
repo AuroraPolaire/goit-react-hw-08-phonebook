@@ -44,7 +44,7 @@ export const AddContact = () => {
               }}
             >
               {({ isSubmitting, errors, touched }) => (
-                <Form display="flex" alignItems="center">
+                <Form>
                   <FormControl mt={4}>
                     <FormLabel>
                       Name

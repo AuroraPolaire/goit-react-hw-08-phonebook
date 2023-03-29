@@ -15,22 +15,11 @@ import {
   InputGroup,
 } from '@chakra-ui/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { register } from 'redux/auth/operations';
 import { useDispatch } from 'react-redux';
+import { RegisterSchema } from 'components/validation/validation';
 
 // import PropTypes from 'prop-types';
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-});
 
 const ModalRegister = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
@@ -50,7 +39,6 @@ const ModalRegister = ({ onClose, isOpen }) => {
             validationSchema={RegisterSchema}
             onSubmit={values => {
               dispatch(register(values));
-              console.log(values);
               onClose();
             }}
           >

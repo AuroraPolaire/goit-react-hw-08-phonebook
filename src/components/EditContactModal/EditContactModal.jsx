@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+
 import {
   FormControl,
   FormLabel,
@@ -17,15 +17,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { editContact } from 'redux/contacts/contactsOperations';
 import { selectItems } from 'redux/contacts/selectors';
+import { EditSchema } from 'components/validation/validation';
 // import PropTypes from 'prop-types'
-
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  number: Yup.number().required('Required'),
-});
 
 const EditContactModal = ({ isOpen, onClose, id }) => {
   const contacts = useSelector(selectItems);
@@ -45,7 +38,7 @@ const EditContactModal = ({ isOpen, onClose, id }) => {
               name: contactToEdit[0]?.name,
               number: contactToEdit[0]?.number,
             }}
-            validationSchema={RegisterSchema}
+            validationSchema={EditSchema}
             onSubmit={values => {
               dispatch(editContact({ id, values }));
             }}
