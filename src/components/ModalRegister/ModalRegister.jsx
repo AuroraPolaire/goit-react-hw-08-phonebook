@@ -18,38 +18,37 @@ import {
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import { register } from 'redux/auth/operations';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { RegisterSchema } from 'components/validation/validation';
 
 import PropTypes from 'prop-types';
-import { selectIsLogging } from 'redux/auth/selectors';
 
 const ModalRegister = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLogging = useSelector(selectIsLogging);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      onCloseComplete={() => {
-        navigate('/');
-        isLogging ? navigate('/contacts') : navigate('/');
-      }}
-    >
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Register new user</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton
+          onClick={() => {
+            navigate('/');
+            onClose();
+          }}
+        />
         <ModalBody pb={6}>
           <Formik
             initialValues={{ name: '', email: '', password: '' }}
             validationSchema={RegisterSchema}
             onSubmit={values => {
-              dispatch(register(values));
+              dispatch(register(values))
+                .unwrap()
+                .then(data => navigate('/contacts'))
+                .catch(error => navigate('/'));
               onClose();
             }}
           >
@@ -111,7 +110,13 @@ const ModalRegister = ({ onClose, isOpen }) => {
                   <Button type="submit" mr={3} disabled={isSubmitting}>
                     Submit
                   </Button>
-                  <Button type="button " onClick={onClose}>
+                  <Button
+                    type="button "
+                    onClick={() => {
+                      navigate('/');
+                      onClose();
+                    }}
+                  >
                     Close
                   </Button>
                 </ModalFooter>

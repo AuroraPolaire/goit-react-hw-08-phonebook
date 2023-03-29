@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from 'redux/auth/operations';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   Modal,
   ModalOverlay,
@@ -22,34 +22,34 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { LoginSchema } from 'components/validation/validation';
 import PropTypes from 'prop-types';
-import { selectIsLogging } from 'redux/auth/selectors';
 
 const ModalLogin = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogging = useSelector(selectIsLogging);
 
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        onCloseComplete={() => {
-          isLogging ? navigate('/contacts') : navigate('/');
-        }}
-      >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Log in</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton
+            onClick={() => {
+              navigate('/');
+              onClose();
+            }}
+          />
           <ModalBody pb={6}>
             <Formik
               initialValues={{ email: '', password: '' }}
               validationSchema={LoginSchema}
               onSubmit={values => {
-                dispatch(logIn(values));
+                dispatch(logIn(values))
+                  .unwrap()
+                  .then(data => navigate('/contacts'))
+                  .catch(error => navigate('/'));
                 onClose();
               }}
             >
@@ -97,7 +97,13 @@ const ModalLogin = ({ onClose, isOpen }) => {
                     <Button type="submit" mr={3} disabled={isSubmitting}>
                       Log in
                     </Button>
-                    <Button type="button " onClick={onClose}>
+                    <Button
+                      type="button "
+                      onClick={() => {
+                        navigate('/');
+                        onClose();
+                      }}
+                    >
                       Close
                     </Button>
                   </ModalFooter>
