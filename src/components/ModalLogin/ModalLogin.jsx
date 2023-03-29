@@ -1,4 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { logIn } from 'redux/auth/operations';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Modal,
   ModalOverlay,
@@ -17,19 +20,26 @@ import {
 } from '@chakra-ui/react';
 
 import { Formik, Form, Field } from 'formik';
-import { logIn } from 'redux/auth/operations';
-import { useDispatch } from 'react-redux';
 import { LoginSchema } from 'components/validation/validation';
 import PropTypes from 'prop-types';
+import { selectIsLogging } from 'redux/auth/selectors';
 
 const ModalLogin = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLogging = useSelector(selectIsLogging);
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        onCloseComplete={() => {
+          isLogging ? navigate('/contacts') : navigate('/');
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Log in</ModalHeader>

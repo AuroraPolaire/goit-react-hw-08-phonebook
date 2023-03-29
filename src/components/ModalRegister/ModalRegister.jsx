@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Modal,
   ModalOverlay,
@@ -17,19 +18,28 @@ import {
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import { register } from 'redux/auth/operations';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RegisterSchema } from 'components/validation/validation';
 
 import PropTypes from 'prop-types';
+import { selectIsLogging } from 'redux/auth/selectors';
 
 const ModalRegister = ({ onClose, isOpen }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLogging = useSelector(selectIsLogging);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      onCloseComplete={() => {
+        navigate('/');
+        isLogging ? navigate('/contacts') : navigate('/');
+      }}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Register new user</ModalHeader>

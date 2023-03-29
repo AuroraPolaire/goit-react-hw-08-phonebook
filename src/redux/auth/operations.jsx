@@ -1,5 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 // import userEvent from '@testing-library/user-event';
@@ -27,6 +28,8 @@ export const register = createAsyncThunk(
       return result.data;
     } catch (error) {
       toast.error('Such user already exists');
+      const navigate = useNavigate();
+      navigate('/');
       return thunkApi.rejectWithValue(error.message);
     }
   }
@@ -43,6 +46,8 @@ export const logIn = createAsyncThunk(
       return result.data;
     } catch (error) {
       toast.error('Wrong e-mail or password.');
+      const navigate = useNavigate();
+      navigate('/');
       return thunkAPI.rejectWithValue(error.message);
     }
   }
