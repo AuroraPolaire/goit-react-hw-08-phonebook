@@ -13,8 +13,9 @@ import {
   Button,
   InputRightElement,
   InputGroup,
+  FormErrorMessage,
 } from '@chakra-ui/react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { register } from 'redux/auth/operations';
 import { useDispatch } from 'react-redux';
 import { RegisterSchema } from 'components/validation/validation';
@@ -44,45 +45,43 @@ const ModalRegister = ({ onClose, isOpen }) => {
           >
             {({ isSubmitting, errors, touched }) => (
               <Form>
-                <FormControl>
+                <FormControl isInvalid={errors.name && touched.name}>
                   <FormLabel>
                     Name
                     <Field
                       as={Input}
-                      isInvalid={errors.name && touched.name}
                       errorBorderColor="red.300"
-                      type="name"
+                      type="text"
                       name="name"
-                      pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                      title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                     ></Field>
                     {errors.name && touched.name ? (
-                      <ErrorMessage name="name" component="div" />
+                      <FormErrorMessage>{errors.name}</FormErrorMessage>
                     ) : null}
                   </FormLabel>
                 </FormControl>
-                <FormControl mt={4}>
+                <FormControl mt={4} isInvalid={errors.email && touched.email}>
                   <FormLabel>
                     E-mail
                     <Field
                       as={Input}
-                      isInvalid={errors.name && touched.name}
                       errorBorderColor="red.300"
                       type="email"
                       name="email"
                     ></Field>
                     {errors.email && touched.email ? (
-                      <ErrorMessage name="email" component="div" />
+                      <FormErrorMessage>{errors.email}</FormErrorMessage>
                     ) : null}
                   </FormLabel>
                 </FormControl>
-                <FormControl mt={4}>
+                <FormControl
+                  mt={4}
+                  isInvalid={errors.password && touched.password}
+                >
                   <FormLabel>
                     Password
                     <InputGroup size="md">
                       <Field
                         as={Input}
-                        isInvalid={errors.name && touched.name}
                         errorBorderColor="red.300"
                         type={show ? 'text' : 'password'}
                         name="password"
@@ -94,7 +93,7 @@ const ModalRegister = ({ onClose, isOpen }) => {
                       </InputRightElement>
                     </InputGroup>
                     {errors.password && touched.password ? (
-                      <ErrorMessage name="password" component="div" />
+                      <FormErrorMessage>{errors.password}</FormErrorMessage>
                     ) : null}
                   </FormLabel>
                 </FormControl>
@@ -116,8 +115,8 @@ const ModalRegister = ({ onClose, isOpen }) => {
 };
 
 ModalRegister.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func,
+  isOpen: PropTypes.bool,
 };
 
 export default ModalRegister;

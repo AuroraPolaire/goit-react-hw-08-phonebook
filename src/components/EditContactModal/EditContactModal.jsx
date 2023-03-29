@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import {
   FormControl,
@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalCloseButton,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,33 +45,33 @@ const EditContactModal = ({ isOpen, onClose, id }) => {
           >
             {({ isSubmitting, errors, touched }) => (
               <Form>
-                <FormControl mt={4}>
+                <FormControl mt={4} isInvalid={errors.name && touched.name}>
                   <FormLabel>
                     Name
                     <Field
                       as={Input}
-                      isInvalid={errors.name && touched.name}
                       errorBorderColor="red.300"
-                      type="name"
+                      type="text"
                       name="name"
+                      pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                      title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                     ></Field>
                     {errors.name && touched.name ? (
-                      <ErrorMessage name="name" component="div" />
+                      <FormErrorMessage>{errors.name}</FormErrorMessage>
                     ) : null}
                   </FormLabel>
                 </FormControl>
-                <FormControl mt={4}>
+                <FormControl mt={4} isInvalid={errors.number && touched.number}>
                   <FormLabel>
                     Number
                     <Field
                       as={Input}
-                      isInvalid={errors.number && touched.number}
                       errorBorderColor="red.300"
-                      type="number"
+                      type="tel"
                       name="number"
                     ></Field>
                     {errors.number && touched.number ? (
-                      <ErrorMessage name="number" component="div" />
+                      <FormErrorMessage>{errors.number}</FormErrorMessage>
                     ) : null}
                   </FormLabel>
                 </FormControl>

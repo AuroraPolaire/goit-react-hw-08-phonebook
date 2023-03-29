@@ -13,9 +13,10 @@ import {
   Button,
   InputRightElement,
   InputGroup,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { logIn } from 'redux/auth/operations';
 import { useDispatch } from 'react-redux';
 import { LoginSchema } from 'components/validation/validation';
@@ -44,28 +45,29 @@ const ModalLogin = ({ onClose, isOpen }) => {
             >
               {({ isSubmitting, errors, touched }) => (
                 <Form>
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.email && touched.email}>
                     <FormLabel>
                       E-mail
                       <Field
                         as={Input}
-                        isInvalid={errors.name && touched.name}
                         errorBorderColor="red.300"
                         type="email"
                         name="email"
                       ></Field>
                       {errors.email && touched.email ? (
-                        <ErrorMessage name="email" component="div" />
+                        <FormErrorMessage>{errors.email}</FormErrorMessage>
                       ) : null}
                     </FormLabel>
                   </FormControl>
-                  <FormControl mt={4}>
+                  <FormControl
+                    mt={4}
+                    isInvalid={errors.password && touched.password}
+                  >
                     <FormLabel>
                       Password
                       <InputGroup size="md">
                         <Field
                           as={Input}
-                          isInvalid={errors.name && touched.name}
                           errorBorderColor="red.300"
                           type={show ? 'text' : 'password'}
                           name="password"
@@ -77,7 +79,7 @@ const ModalLogin = ({ onClose, isOpen }) => {
                         </InputRightElement>
                       </InputGroup>
                       {errors.password && touched.password ? (
-                        <ErrorMessage name="password" component="div" />
+                        <FormErrorMessage>{errors.password}</FormErrorMessage>
                       ) : null}
                     </FormLabel>
                   </FormControl>
@@ -100,8 +102,8 @@ const ModalLogin = ({ onClose, isOpen }) => {
 };
 
 ModalLogin.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func,
+  isOpen: PropTypes.bool,
 };
 
 export default ModalLogin;

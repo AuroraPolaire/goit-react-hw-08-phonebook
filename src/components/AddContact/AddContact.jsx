@@ -1,6 +1,13 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FormControl, FormLabel, Input, Button, Box } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Box,
+  FormErrorMessage,
+} from '@chakra-ui/react';
 import {
   Accordion,
   AccordionItem,
@@ -10,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { addContact } from 'redux/contacts/contactsOperations';
-import { RegisterSchema } from 'components/validation/validation';
+import { EditSchema } from 'components/validation/validation';
 
 export const AddContact = () => {
   const dispatch = useDispatch();
@@ -29,7 +36,7 @@ export const AddContact = () => {
           <AccordionPanel p={4} w="400px" margin="auto">
             <Formik
               initialValues={{ name: '', number: '' }}
-              validationSchema={RegisterSchema}
+              validationSchema={EditSchema}
               onSubmit={(values, { resetForm }) => {
                 dispatch(addContact(values));
                 resetForm({ name: '', number: '' });
@@ -37,35 +44,34 @@ export const AddContact = () => {
             >
               {({ isSubmitting, errors, touched }) => (
                 <Form>
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.name && touched.name}>
                     <FormLabel>
                       Name
                       <Field
                         as={Input}
-                        isInvalid={errors.name && touched.name}
                         errorBorderColor="red.300"
-                        type="name"
+                        type="text"
                         name="name"
-                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                       ></Field>
                       {errors.name && touched.name ? (
-                        <ErrorMessage name="name" component="div" />
+                        <FormErrorMessage>{errors.name}</FormErrorMessage>
                       ) : null}
                     </FormLabel>
                   </FormControl>
-                  <FormControl mt={4}>
+                  <FormControl
+                    mt={4}
+                    isInvalid={errors.number && touched.number}
+                  >
                     <FormLabel>
                       Number
                       <Field
                         as={Input}
-                        isInvalid={errors.number && touched.number}
                         errorBorderColor="red.300"
-                        type="number"
+                        type="tel"
                         name="number"
                       ></Field>
                       {errors.number && touched.number ? (
-                        <ErrorMessage name="number" component="div" />
+                        <FormErrorMessage>{errors.number}</FormErrorMessage>
                       ) : null}
                     </FormLabel>
                   </FormControl>
